@@ -28,7 +28,6 @@ public class Main {
 
   static boolean checkTemperatureRange(final float temperature) {
     if ((temperature < 0) || (temperature > 45)) {
-      System.out.println("Temperature is out of range!");
       return false;
     }
     return true;
@@ -36,7 +35,6 @@ public class Main {
 
   static boolean checkChargeStatus(final float soc) {
     if ((soc < 20) || (soc > 80)) {
-      System.out.println("State of Charge is out of range!");
       return false;
     }
     return true;
@@ -44,7 +42,6 @@ public class Main {
 
   static boolean checkRate(final float chargeRate) {
     if (chargeRate > 0.8) {
-      System.out.println("Charge Rate is out of range!");
       return false;
     }
     return true;
@@ -52,7 +49,7 @@ public class Main {
 
   public static void main(final String[] args) {
     Map<String, Float> vitalValuesMap = new HashMap<>();
-    Map<String, Boolean> vitalStatusMap = new HashMap<>();
+    Map<String, Boolean> vitalStatusMap;
     VitalsTest vitalTests = new VitalsTest();
 
     // Positive case
