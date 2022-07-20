@@ -1,5 +1,7 @@
 package vitals.test;
 
+import org.junit.Test;
+
 /*
  * Copyright (c) Robert Bosch GmbH. All rights reserved.
  */
@@ -7,8 +9,10 @@ package vitals.test;
 /**
  * @author msp5cob
  */
+
 public class VitalsTest {
 
+  @Test
   public void assertVitals(final boolean vitalStatus, final String vitalName) {
     if (vitalStatus) {
       System.out.println("Battery " + vitalName + " is within range!");
