@@ -1,23 +1,76 @@
 package vitals;
 
-public class Main {
-    static boolean batteryIsOk(float temperature, float soc, float chargeRate) {
-        if(temperature < 0 || temperature > 45) {
-            System.out.println("Temperature is out of range!");
-            return false;
-        } else if(soc < 20 || soc > 80) {
-            System.out.println("State of Charge is out of range!");
-            return false;
-        } else if(chargeRate > 0.8) {
-            System.out.println("Charge Rate is out of range!");
-            return false;
-        }
-        return true;
-    }
+import java.util.ArrayList;
+import java.util.List;
 
-    public static void main(String[] args) {
-        assert(batteryIsOk(25, 70, 0.7f) == true);
-        assert(batteryIsOk(50, 85, 0.0f) == false);
-        System.out.println("Some more tests needed");
+import vitals.interfaces.VitalsInterface;
+import vitals.test.VitalsTest;
+
+public class Main {
+
+  public static void main(final String[] args) {
+    List<VitalsInterface> vitalsList = new ArrayList<>();
+    VitalsTest vitalTests = new VitalsTest();
+    VitalsInterface vitals;
+    // Unable to configure jUnit in git
+    // since using this logic,
+    // if JUnit is available all the Test data can be created and tested inside Junit class itself
+
+    // Positive Case
+    vitals = new Temperature(25f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+    vitals = new StateOfCharge(70f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+    vitals = new ChargeRate(0.7f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+
+    isBatteryOk(vitalsList);
+
+    // Negative Case
+    vitals = new Temperature(50f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+    vitals = new StateOfCharge(85f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+    vitals = new ChargeRate(0.9f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+
+    isBatteryOk(vitalsList);
+
+    // Warning Case
+    vitals = new Temperature(39f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+    vitals = new StateOfCharge(77f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+    vitals = new ChargeRate(0.79f);
+    testVitalBatteryStatus(vitals, vitalTests);
+    vitalsList.add(vitals);
+
+    isBatteryOk(vitalsList);
+
+  }
+
+  private static boolean isBatteryOk(final List<VitalsInterface> vitals) {
+    for (VitalsInterface vital : vitals) {
+      if (!vital.checkVitalsStatus()) {
+        return false;
+      }
     }
+    return true;
+  }
+
+  /**
+   * @param vitalStatusMap
+   * @param vitalTests
+   */
+  private static void testVitalBatteryStatus(final VitalsInterface vitals, final VitalsTest vitalTests) {
+    vitalTests.assertVitals(vitals, vitals.getClass().getSimpleName());
+  }
 }
