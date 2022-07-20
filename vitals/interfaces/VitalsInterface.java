@@ -11,4 +11,6 @@ public interface VitalsInterface {
 
   boolean checkVitalsStatus();
 
+  boolean isWarningToBeThrown();
+
 }

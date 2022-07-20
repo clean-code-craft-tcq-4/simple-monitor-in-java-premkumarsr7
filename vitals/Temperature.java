@@ -14,10 +14,15 @@ public class Temperature implements VitalsInterface {
 
   private static float upperLimit = 40f;
 
-  private final float temperature;
+  private final float temperatureValue;
 
-  public Temperature(final float temperature) {
-    this.temperature = temperature;
+  /*
+   * Tolerance level to raise warning before raising error in percentage
+   */
+  private static final float TOLERANCE_FOR_WARNING = 5;
+
+  public Temperature(final float temperatureValue) {
+    this.temperatureValue = temperatureValue;
   }
 
   /**
@@ -25,7 +30,16 @@ public class Temperature implements VitalsInterface {
    */
   @Override
   public boolean checkVitalsStatus() {
-    return !((this.temperature < lowerLimit) || (this.temperature > upperLimit));
+    return (this.temperatureValue >= lowerLimit) && (this.temperatureValue <= upperLimit);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isWarningToBeThrown() {
+    return (this.temperatureValue >= (lowerLimit + (lowerLimit * (Temperature.TOLERANCE_FOR_WARNING / 100)))) &&
+        (this.temperatureValue <= (upperLimit - (upperLimit * (Temperature.TOLERANCE_FOR_WARNING / 100))));
   }
 
 }

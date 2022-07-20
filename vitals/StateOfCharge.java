@@ -16,6 +16,11 @@ public class StateOfCharge implements VitalsInterface {
 
   private final float soc;
 
+  /*
+   * Tolerance level to raise warning before raising error in percentage
+   */
+  private static final float TOLERANCE_FOR_WARNING = 5;
+
   public StateOfCharge(final float soc) {
     this.soc = soc;
   }
@@ -26,6 +31,15 @@ public class StateOfCharge implements VitalsInterface {
   @Override
   public boolean checkVitalsStatus() {
     return !((this.soc < lowerLimit) || (this.soc > upperLimit));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isWarningToBeThrown() {
+    return (this.soc >= (lowerLimit + (lowerLimit * (StateOfCharge.TOLERANCE_FOR_WARNING / 100)))) &&
+        (this.soc <= (upperLimit - (upperLimit * (StateOfCharge.TOLERANCE_FOR_WARNING / 100))));
   }
 
 }

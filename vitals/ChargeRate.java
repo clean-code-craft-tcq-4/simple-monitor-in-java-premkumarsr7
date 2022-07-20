@@ -12,10 +12,16 @@ public class ChargeRate implements VitalsInterface {
 
   private static float upperLimit = 0.8f;
 
-  private final float chargeRate;
+  private final float chargeRateValue;
 
-  public ChargeRate(final float chargeRate) {
-    this.chargeRate = chargeRate;
+  /*
+   * Tolerance level to raise warning before raising error in percentage
+   */
+  private final float warningTolerance = 5;
+
+
+  public ChargeRate(final float chargeRateValue) {
+    this.chargeRateValue = chargeRateValue;
   }
 
   /**
@@ -23,7 +29,15 @@ public class ChargeRate implements VitalsInterface {
    */
   @Override
   public boolean checkVitalsStatus() {
-    return !(this.chargeRate > upperLimit);
+    return this.chargeRateValue <= upperLimit;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isWarningToBeThrown() {
+    return this.chargeRateValue <= (upperLimit - (upperLimit * (this.warningTolerance / 100)));
   }
 
 }

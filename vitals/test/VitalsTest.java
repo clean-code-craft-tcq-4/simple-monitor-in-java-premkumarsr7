@@ -1,6 +1,6 @@
 package vitals.test;
 
-import org.junit.Test;
+import vitals.interfaces.VitalsInterface;
 
 /*
  * Copyright (c) Robert Bosch GmbH. All rights reserved.
@@ -12,13 +12,12 @@ import org.junit.Test;
 
 public class VitalsTest {
 
-  @Test
-  public void assertVitals(final boolean vitalStatus, final String vitalName) {
-    if (vitalStatus) {
-      System.out.println("Battery " + vitalName + " is within range!");
+  public void assertVitals(final VitalsInterface vital, final String vitalName) {
+    if (!vital.checkVitalsStatus()) {
+      System.out.println("ERROR --- Battery " + vitalName + " is out of range!");
     }
-    else {
-      System.out.println("Battery " + vitalName + " is out of range!");
+    else if (!vital.isWarningToBeThrown()) {
+      System.out.println("WARNING --- Battery " + vitalName + " is close to out of range!");
     }
   }
 }
